@@ -1,0 +1,73 @@
+@MartenEventSourcing.APIs_HostAddress = http://localhost:5032
+
+GET {{MartenEventSourcing.APIs_HostAddress}}/funds/44445555-5717-4562-b3fc-2c963f661111
+Accept: application/json
+
+###
+
+POST {{MartenEventSourcing.APIs_HostAddress}}/funds/create-account/44445555-5717-4562-b3fc-2c963f661111
+Accept: application/json
+Content-Type: application/json
+
+{
+}
+
+###
+
+POST {{MartenEventSourcing.APIs_HostAddress}}/funds/deposit/44445555-5717-4562-b3fc-2c963f661111
+Accept: application/json
+Content-Type: application/json
+
+{
+  "paymentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "transactionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "transactionDate": "2025-04-29T09:47:27.787Z",
+  "currency": "USD",
+  "amount": 200
+}
+
+###
+
+
+POST {{MartenEventSourcing.APIs_HostAddress}}/funds/withdraw/44445555-5717-4562-b3fc-2c963f661111
+Accept: application/json
+Content-Type: application/json
+
+{
+  "paymentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "transactionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "transactionDate": "2025-04-29T09:47:27.787Z",
+  "currency": "USD",
+  "amount": 10
+}
+
+###
+
+POST {{MartenEventSourcing.APIs_HostAddress}}/funds/account-block/44445555-5717-4562-b3fc-2c963f661111
+Accept: application/json
+Content-Type: application/json
+
+{
+}
+
+###
+
+
+POST {{MartenEventSourcing.APIs_HostAddress}}/funds/account-unblock/44445555-5717-4562-b3fc-2c963f661111
+Accept: application/json
+Content-Type: application/json
+
+{
+}
+
+###
+
+
+DELETE {{MartenEventSourcing.APIs_HostAddress}}/funds/account-close/44445555-5717-4562-b3fc-2c963f661111
+Accept: application/json
+Content-Type: application/json
+
+{
+}
+
+###

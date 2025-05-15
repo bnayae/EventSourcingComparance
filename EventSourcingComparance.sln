@@ -1,0 +1,53 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Marten", "Marten", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abstractions", "Abstractions", "{B97F5285-8C24-4461-9C10-91DD7782794F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartenEventSourcing.APIs", "MartenEventSourcing.APIs\MartenEventSourcing.APIs.csproj", "{37D6B09F-01FD-4D57-A85D-E77DD18D8991}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Abstractions", "Funds.Abstractions\Funds.Abstractions.csproj", "{21EB4161-4684-4465-B75D-D3C7FB376F77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Events", "Funds.Events\Funds.Events.csproj", "{B1D965F1-C067-45CE-A902-B67F2ACE6E28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37D6B09F-01FD-4D57-A85D-E77DD18D8991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D6B09F-01FD-4D57-A85D-E77DD18D8991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D6B09F-01FD-4D57-A85D-E77DD18D8991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D6B09F-01FD-4D57-A85D-E77DD18D8991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21EB4161-4684-4465-B75D-D3C7FB376F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21EB4161-4684-4465-B75D-D3C7FB376F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21EB4161-4684-4465-B75D-D3C7FB376F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21EB4161-4684-4465-B75D-D3C7FB376F77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1D965F1-C067-45CE-A902-B67F2ACE6E28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D965F1-C067-45CE-A902-B67F2ACE6E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D965F1-C067-45CE-A902-B67F2ACE6E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1D965F1-C067-45CE-A902-B67F2ACE6E28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37D6B09F-01FD-4D57-A85D-E77DD18D8991} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{21EB4161-4684-4465-B75D-D3C7FB376F77} = {B97F5285-8C24-4461-9C10-91DD7782794F}
+		{B1D965F1-C067-45CE-A902-B67F2ACE6E28} = {B97F5285-8C24-4461-9C10-91DD7782794F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1013E195-E950-426F-8ED1-BA7E77085AE6}
+	EndGlobalSection
+EndGlobal
