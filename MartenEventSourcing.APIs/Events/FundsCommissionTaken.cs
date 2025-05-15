@@ -7,5 +7,5 @@ namespace Funds.Events;
 /// </summary>
 /// <param name="AccountId">Account identifier</param>
 /// <param name="Commission">The commission taken percent (0-1)</param>
-public partial record FundsCommissionTaken(AccountId Id,
+public partial record FundsCommissionTaken(AccountId AccountId,
                                               double Commission);

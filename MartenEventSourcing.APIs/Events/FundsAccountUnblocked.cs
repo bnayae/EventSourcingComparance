@@ -6,4 +6,4 @@ namespace Funds.Events;
 /// Funds account unblocked 
 /// </summary>
 /// <param name="AccountId">Account identifier</param>
-public partial record FundsAccountUnblocked(AccountId Id);
+public partial record FundsAccountUnblocked(AccountId AccountId);

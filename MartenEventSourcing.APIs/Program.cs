@@ -33,12 +33,12 @@ builder.Services.AddMarten(options =>
     options.AutoCreateSchemaObjects = AutoCreate.All;
     //}
 
-    //options.Schema.For<FundsAccountCreated>().Identity(x => x.AccountId);
-    //options.Schema.For<FundsDeposited>().Identity(x => x.AccountId);
-    //options.Schema.For<FundsWithdrawn>().Identity(x => x.AccountId);
-    //options.Schema.For<FundsAccountBlocked>().Identity(x => x.AccountId);
-    //options.Schema.For<FundsAccountUnblocked>().Identity(x => x.AccountId);
-    //options.Schema.For<FundsAccountClosed>().Identity(x => x.AccountId);
+    options.Schema.For<FundsAccountCreated>().Identity(x => x.AccountId);
+    options.Schema.For<FundsDeposited>().Identity(x => x.AccountId);
+    options.Schema.For<FundsWithdrawn>().Identity(x => x.AccountId);
+    options.Schema.For<FundsAccountBlocked>().Identity(x => x.AccountId);
+    options.Schema.For<FundsAccountUnblocked>().Identity(x => x.AccountId);
+    options.Schema.For<FundsAccountClosed>().Identity(x => x.AccountId);
 });
 
 var app = builder.Build();

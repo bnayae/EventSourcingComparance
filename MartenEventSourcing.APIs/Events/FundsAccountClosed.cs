@@ -6,4 +6,4 @@ namespace Funds.Events;
 /// Funds account closed 
 /// </summary>
 /// <param name="AccountId">Account identifier</param>
-public partial record FundsAccountClosed(AccountId Id);
+public partial record FundsAccountClosed(AccountId AccountId);

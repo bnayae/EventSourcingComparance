@@ -6,4 +6,4 @@ namespace Funds.Events;
 /// Funds account created 
 /// </summary>
 /// <param name="Id">Account identifier</param>
-public partial record FundsAccountCreated(AccountId Id);
+public partial record FundsAccountCreated(AccountId AccountId);

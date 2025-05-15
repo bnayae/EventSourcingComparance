@@ -25,7 +25,7 @@ public record BalanceView
     {
         return new BalanceView
         {
-            Id = e.Id,
+            Id = e.AccountId,
             IsActive = true,
             Funds = ImmutableDictionary<Currency, double>.Empty,
             Created = true,
@@ -78,7 +78,7 @@ public record BalanceView
     {
         return new BalanceView
         {
-            Id = e.Id,
+            Id = e.AccountId,
             IsActive = false,
             Created = false,
             Funds = ImmutableDictionary<Currency, double>.Empty
