@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using EvDb.Core;
+using Funds.Abstractions;
 using Funds.Events;
 using KurrentDB.Client;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
@@ -19,10 +20,10 @@ public class EventStoreRepository
         _logger = logger;
     }
 
-    public async Task<BalanceView> GetBalanceViewAsync(Guid accountId, CancellationToken cancellationToken = default)
+    public async Task<Balance> GetBalanceViewAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
         var streamName = $"account-{accountId}";
-        BalanceView balance = BalanceView.Empty;
+        BalanceView view = BalanceView.Empty;
 
         try
         {
@@ -35,7 +36,7 @@ public class EventStoreRepository
             var readState = await events.ReadState;
             if (readState == ReadState.StreamNotFound)
             {
-                return BalanceView.Empty;
+                return Balance.Empty;
             }
 
             await foreach (var @event in events)
@@ -45,43 +46,43 @@ public class EventStoreRepository
 
                 if(eventType == FundsAccountCreated.PAYLOAD_TYPE)
                 {
-                    balance = balance.Apply(JsonSerializer.Deserialize<FundsAccountCreated>(eventData)!);
+                    view = view.Apply(JsonSerializer.Deserialize<FundsAccountCreated>(eventData)!);
                 }
                 else if (eventType == FundsAccountClosed.PAYLOAD_TYPE)
                 {
-                    balance = balance.Apply(JsonSerializer.Deserialize<FundsAccountClosed>(eventData)!);
+                    view = view.Apply(JsonSerializer.Deserialize<FundsAccountClosed>(eventData)!);
                 }
                 else if (eventType == FundsAccountBlocked.PAYLOAD_TYPE)
                 {
-                    balance = balance.Apply(JsonSerializer.Deserialize<FundsAccountBlocked>(eventData)!);
+                    view = view.Apply(JsonSerializer.Deserialize<FundsAccountBlocked>(eventData)!);
                 }
                 else if (eventType == FundsAccountUnblocked.PAYLOAD_TYPE)
                 {
-                    balance = balance.Apply(JsonSerializer.Deserialize<FundsAccountUnblocked>(eventData)!);
+                    view = view.Apply(JsonSerializer.Deserialize<FundsAccountUnblocked>(eventData)!);
                 }
                 else if (eventType == FundsCommissionTaken.PAYLOAD_TYPE)
                 {
-                    balance = balance.Apply(JsonSerializer.Deserialize<FundsCommissionTaken>(eventData)!);
+                    view = view.Apply(JsonSerializer.Deserialize<FundsCommissionTaken>(eventData)!);
                 }
                 else if (eventType == FundsDeposited.PAYLOAD_TYPE)
                 {
-                    balance = balance.Apply(JsonSerializer.Deserialize<FundsDeposited>(eventData)!);
+                    view = view.Apply(JsonSerializer.Deserialize<FundsDeposited>(eventData)!);
                 }
                 else if (eventType == FundsWithdrawn.PAYLOAD_TYPE)
                 {
-                    balance = balance.Apply(JsonSerializer.Deserialize<FundsWithdrawn>(eventData)!);
+                    view = view.Apply(JsonSerializer.Deserialize<FundsWithdrawn>(eventData)!);
                 }
             }
 
-            return balance;
+            return view.Balance;
         }
         catch (StreamNotFoundException)
         {
-            return null;
+            return Balance.Empty;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving balance for account {AccountId}", accountId);
+            _logger.LogError(ex, "Error retrieving view for account {AccountId}", accountId);
             throw;
         }
     }

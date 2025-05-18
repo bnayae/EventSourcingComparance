@@ -41,7 +41,7 @@ var withdraw = app.MapGroup("funds")
 withdraw.MapGet("/{account}",
     async (EventStoreRepository repository, AccountId account) =>
     {
-        BalanceView? balance = await repository.GetBalanceViewAsync(account);
+        Balance balance = await repository.GetBalanceViewAsync(account);
         return balance is not null ? Results.Ok(balance) : Results.NotFound();
     });
 

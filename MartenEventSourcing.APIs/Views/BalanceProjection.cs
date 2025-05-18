@@ -1,18 +1,17 @@
-﻿using Funds.Events;
-using System.Collections.Immutable;
-
+﻿using Funds.Abstractions;
+using Funds.Events;
 using Marten.Events.Aggregation;
-using Funds.Abstractions;
+using System.Collections.Immutable;
 
 namespace MartenEventSourcing.APIs.Views;
 
 // TODO: check the thread safety of this class
 
-public class BalanceProjection : SingleStreamProjection<BalanceView>
+public class BalanceProjection : SingleStreamProjection<Balance>
 {
-    public BalanceView Apply(FundsAccountCreated e, BalanceView view)
+    public Balance Apply(FundsAccountCreated e, Balance view)
     {
-        return new BalanceView
+        return new Balance
         {
             Id = e.AccountId,
             IsActive = true,
@@ -21,7 +20,7 @@ public class BalanceProjection : SingleStreamProjection<BalanceView>
         };
     }
 
-    public BalanceView Apply(FundsDeposited e, BalanceView view)
+    public Balance Apply(FundsDeposited e, Balance view)
     {
         if (!view.Funds.TryGetValue(e.Data.Currency, out var oldBalance))
             oldBalance = 0;
@@ -32,13 +31,10 @@ public class BalanceProjection : SingleStreamProjection<BalanceView>
         };
     }
 
-    public BalanceView Apply(FundsWithdrawn e, BalanceView view)
+    public Balance Apply(FundsWithdrawn e, Balance view)
     {
         if (!view.Funds.TryGetValue(e.Data.Currency, out var oldBalance))
             oldBalance = 0;
-
-        //if(oldBalance < e.Data.Amount)
-        //    throw new InvalidOperationException($"Not enough funds to withdraw {e.Data.Amount} {e.Data.Currency}");
 
         return view with
         {
@@ -47,7 +43,20 @@ public class BalanceProjection : SingleStreamProjection<BalanceView>
         };
     }
 
-    public BalanceView Apply(FundsAccountBlocked e, BalanceView view)
+    public Balance Apply(FundsCommissionTaken e, Balance view)
+    {
+        if (!view.Funds.TryGetValue(e.Data.Currency, out var oldBalance))
+            oldBalance = 0;
+
+        double commissionValue = e.Data.Amount * e.Commission;
+        return view with
+        {
+            Funds = view.Funds.Remove(e.Data.Currency)
+                         .Add(e.Data.Currency, oldBalance - commissionValue)
+        };
+    }
+
+    public Balance Apply(FundsAccountBlocked e, Balance view)
     {
         return view with
         {
@@ -55,7 +64,7 @@ public class BalanceProjection : SingleStreamProjection<BalanceView>
         };
     }
 
-    public BalanceView Apply(FundsAccountUnblocked e, BalanceView view)
+    public Balance Apply(FundsAccountUnblocked e, Balance view)
     {
         return view with
         {
@@ -63,7 +72,7 @@ public class BalanceProjection : SingleStreamProjection<BalanceView>
         };
     }
 
-    public BalanceView Apply(FundsAccountClosed e, BalanceView view)
+    public Balance Apply(FundsAccountClosed e, Balance view)
     {
         return view with
         {

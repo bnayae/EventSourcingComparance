@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBs", "DBs", "{D6EDE582-9F6
 		docker\DBs\compose.yaml = docker\DBs\compose.yaml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Eventuous", "Eventuous", "{B9F4A897-7032-4258-ADA9-89E4430A3259}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,4 +1,4 @@
-﻿// File: Views/BalanceView.cs
+﻿// File: Views/Balance.cs
 using System.Collections.Immutable;
 using Funds.Abstractions;
 using Funds.Events;
@@ -7,83 +7,96 @@ namespace KurrentEventSourcing.APIs;
 
 public record BalanceView
 {
-    public static BalanceView Empty { get; } = new BalanceView
-    {
-        Id = Guid.Empty,
-        Funds = ImmutableDictionary<Currency, double>.Empty,
-        IsActive = false,
-        Created = false
-    };
+    public static BalanceView Empty { get; } = new() { Balance = Balance.Empty };
 
-    public required Guid Id { get; init; }
-    public required ImmutableDictionary<Currency, double> Funds { get; init; }
-    public bool IsActive { get; init; }
-    public bool Created { get; init; }
+
+    public required Balance Balance { get; init; }
 
     public BalanceView Apply(FundsAccountCreated e) =>
         new()
         {
-            Id = e.AccountId,
-            IsActive = true,
-            Funds = ImmutableDictionary<Currency, double>.Empty,
-            Created = true,
+            Balance = new()
+            {
+                Id = e.AccountId,
+                IsActive = true,
+                Funds = ImmutableDictionary<Currency, double>.Empty,
+                Created = true,
+            }
         };
 
     public BalanceView Apply(FundsDeposited e)
     {
-        if (!Funds.TryGetValue(e.Data.Currency, out var oldBalance))
+        if (!Balance.Funds.TryGetValue(e.Data.Currency, out var oldBalance))
             oldBalance = 0;
 
         return this with
         {
-            Funds = Funds.Remove(e.Data.Currency)
+            Balance = Balance with
+            {
+                Funds = Balance.Funds.Remove(e.Data.Currency)
                          .Add(e.Data.Currency, oldBalance + e.Data.Amount),
+            }
         };
     }
 
     public BalanceView Apply(FundsWithdrawn e)
     {
-        if (!Funds.TryGetValue(e.Data.Currency, out var oldBalance))
+        if (!Balance.Funds.TryGetValue(e.Data.Currency, out var oldBalance))
             oldBalance = 0;
 
         return this with
         {
-            Funds = Funds.Remove(e.Data.Currency)
+            Balance = Balance with
+            {
+                Funds = Balance.Funds.Remove(e.Data.Currency)
                          .Add(e.Data.Currency, oldBalance - e.Data.Amount),
+            }
         };
     }
 
     public BalanceView Apply(FundsCommissionTaken e)
     {
-        if (!Funds.TryGetValue(e.Data.Currency, out var oldBalance))
+        if (!Balance.Funds.TryGetValue(e.Data.Currency, out var oldBalance))
             oldBalance = 0;
 
         double commissionValue = e.Data.Amount * e.Commission;
         return this with
         {
-            Funds = Funds.Remove(e.Data.Currency)
+            Balance = Balance with
+            {
+                Funds = Balance.Funds.Remove(e.Data.Currency)
                          .Add(e.Data.Currency, oldBalance - commissionValue),
+            }
         };
     }
 
     public BalanceView Apply(FundsAccountBlocked e) =>
         this with
         {
-            IsActive = false,
+            Balance = Balance with
+            {
+                IsActive = false,
+            }
         };
 
     public BalanceView Apply(FundsAccountUnblocked e) =>
         this with
         {
-            IsActive = true,
+            Balance = Balance with
+            {
+                IsActive = true,
+            }
         };
 
     public BalanceView Apply(FundsAccountClosed e) =>
         new()
         {
-            Id = e.AccountId,
-            IsActive = false,
-            Created = false,
-            Funds = ImmutableDictionary<Currency, double>.Empty
+            Balance = Balance with
+            {
+                Id = e.AccountId,
+                IsActive = false,
+                Created = false,
+                Funds = ImmutableDictionary<Currency, double>.Empty
+            }
         };
 }

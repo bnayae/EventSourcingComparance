@@ -64,10 +64,9 @@ withdraw.MapGet("/{account}",
     {
         var e = new FundsAccountCreated(account);
 
-        //BalanceView? balance = await session.Events.AggregateStreamAsync<BalanceView>(account);
-        BalanceView? balance = await session.LoadAsync<BalanceView>(account);
+        Balance balance = await session.LoadAsync<Balance>(account);
 
-        return balance is not null ? Results.Ok(balance) : Results.NotFound();
+        return balance != Balance.Empty ? Results.Ok(balance) : Results.NotFound();
     });
 
 withdraw.MapPost("/create-account/{account}",
