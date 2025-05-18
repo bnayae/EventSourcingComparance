@@ -18,7 +18,7 @@ public class EventStoreRepository : IRepository
         _logger = logger;
     }
 
-    public async Task<Balance> GetBalanceViewAsync(Guid accountId, CancellationToken cancellationToken = default)
+    public async Task<Balance> GetBalanceAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
         var streamName = $"account-{accountId}";
         BalanceView view = BalanceView.Empty;
