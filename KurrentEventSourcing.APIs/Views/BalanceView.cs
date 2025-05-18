@@ -1,7 +1,7 @@
 ﻿// File: Views/Balance.cs
-using System.Collections.Immutable;
 using Funds.Abstractions;
 using Funds.Events;
+using System.Collections.Immutable;
 
 namespace KurrentEventSourcing.APIs;
 

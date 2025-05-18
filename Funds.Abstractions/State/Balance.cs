@@ -1,6 +1,5 @@
 ﻿// File: Views/Balance.cs
 using System.Collections.Immutable;
-using Funds.Abstractions;
 
 namespace Funds.Abstractions;
 

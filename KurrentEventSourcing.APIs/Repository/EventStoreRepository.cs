@@ -1,15 +1,13 @@
 ﻿// File: KurrentFunds.API/Repositories/EventStoreRepository.cs
-using System.Text;
-using System.Text.Json;
 using EvDb.Core;
 using Funds.Abstractions;
 using Funds.Events;
 using KurrentDB.Client;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
+using System.Text;
 
 namespace KurrentEventSourcing.APIs;
 
-public class EventStoreRepository
+public class EventStoreRepository : IRepository
 {
     private readonly KurrentDBClient _eventStoreClient;
     private readonly ILogger<EventStoreRepository> _logger;
@@ -44,7 +42,7 @@ public class EventStoreRepository
                 var eventData = Encoding.UTF8.GetString(@event.Event.Data.Span);
                 var eventType = @event.Event.EventType;
 
-                if(eventType == FundsAccountCreated.PAYLOAD_TYPE)
+                if (eventType == FundsAccountCreated.PAYLOAD_TYPE)
                 {
                     view = view.Apply(JsonSerializer.Deserialize<FundsAccountCreated>(eventData)!);
                 }
@@ -87,8 +85,8 @@ public class EventStoreRepository
         }
     }
 
-    public async Task<IWriteResult> AppendEventAsync<T>(
-        Guid accountId, 
+    public async Task<ulong> AppendEventAsync<T>(
+        Guid accountId,
         T eventData,
         CancellationToken cancellationToken = default)
         where T : IEvDbPayload
@@ -103,7 +101,7 @@ public class EventStoreRepository
                 StreamState.Any,
                 new[] { data },
                 cancellationToken: cancellationToken);
-            return result;
+            return result.LogPosition.CommitPosition;
         }
         catch (Exception ex)
         {
@@ -112,8 +110,8 @@ public class EventStoreRepository
         }
     }
 
-    public async Task<IWriteResult> AppendEventAsync<T>(
-        Guid accountId, 
+    public async Task<ulong> AppendEventAsync<T>(
+        Guid accountId,
         IEnumerable<T> eventsData,
         CancellationToken cancellationToken = default)
         where T : IEvDbPayload
@@ -128,11 +126,11 @@ public class EventStoreRepository
                 StreamState.Any,
                 data,
                 cancellationToken: cancellationToken);
-            return result;
+            return result.LogPosition.CommitPosition;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error appending events to stream {StreamName}",  streamName);
+            _logger.LogError(ex, "Error appending events to stream {StreamName}", streamName);
             throw;
         }
     }

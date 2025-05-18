@@ -1,7 +1,6 @@
 using Funds.Abstractions;
 using Funds.Events;
 using Marten;
-using Marten.Events;
 using MartenEventSourcing.APIs.Views;
 using Microsoft.AspNetCore.Mvc;
 using Weasel.Core;
@@ -103,7 +102,7 @@ withdraw.MapPost("/withdraw/{account}",
     });
 
 withdraw.MapPost("/commission/{account}",
-    async (IDocumentStore store, AccountId account, [FromBody]FundsTransactionData data, [FromQuery] Commission commission) =>
+    async (IDocumentStore store, AccountId account, [FromBody] FundsTransactionData data, [FromQuery] Commission commission) =>
     {
         var e = new FundsCommissionTaken(account, data, commission);
 
