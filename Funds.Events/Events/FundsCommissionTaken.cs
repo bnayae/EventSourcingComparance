@@ -6,7 +6,9 @@ namespace Funds.Events;
 /// Funds commission taken
 /// </summary>
 /// <param name="AccountId">Account identifier</param>
+/// <param name="Data"></param>
 /// <param name="Commission">The commission taken percent (0-1)</param>
 [EvDbDefineEventPayload("funds-commission-taken")]
-public readonly partial record struct FundsCommissionTaken(AccountId AccountId,
+public partial record FundsCommissionTaken(AccountId AccountId,
+                                              FundsTransactionData Data,
                                               Commission Commission);

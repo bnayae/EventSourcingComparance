@@ -1,10 +1,10 @@
+using Funds.Abstractions;
 using Funds.Events;
 using Marten;
 using Marten.Events;
 using MartenEventSourcing.APIs.Views;
 using Microsoft.AspNetCore.Mvc;
 using Weasel.Core;
-using AccountId = System.Guid;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,6 +96,17 @@ withdraw.MapPost("/withdraw/{account}",
     async (IDocumentStore store, AccountId account, [FromBody] FundsTransactionData data) =>
     {
         var e = new FundsWithdrawn(account, data);
+
+        using var session = store.LightweightSession();
+        session.Events.Append(account, e);
+        await session.SaveChangesAsync();
+        return Results.Ok(account);
+    });
+
+withdraw.MapPost("/commission/{account}",
+    async (IDocumentStore store, AccountId account, [FromBody]FundsTransactionData data, [FromQuery] Commission commission) =>
+    {
+        var e = new FundsCommissionTaken(account, data, commission);
 
         using var session = store.LightweightSession();
         session.Events.Append(account, e);

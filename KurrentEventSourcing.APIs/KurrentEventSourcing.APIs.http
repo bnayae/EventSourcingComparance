@@ -1,4 +1,4 @@
-@MartenEventSourcing.APIs_HostAddress = http://localhost:5032
+@MartenEventSourcing.APIs_HostAddress = http://localhost:5259
 
 GET {{MartenEventSourcing.APIs_HostAddress}}/funds/44445555-5717-4562-b3fc-2c963f661111
 Accept: application/json
