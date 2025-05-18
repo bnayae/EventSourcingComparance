@@ -19,7 +19,7 @@ public class EventStoreRepository
         _logger = logger;
     }
 
-    public async Task<BalanceView?> GetBalanceViewAsync(Guid accountId, CancellationToken cancellationToken = default)
+    public async Task<BalanceView> GetBalanceViewAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
         var streamName = $"account-{accountId}";
         BalanceView balance = BalanceView.Empty;
@@ -35,7 +35,7 @@ public class EventStoreRepository
             var readState = await events.ReadState;
             if (readState == ReadState.StreamNotFound)
             {
-                return null;
+                return BalanceView.Empty;
             }
 
             await foreach (var @event in events)
